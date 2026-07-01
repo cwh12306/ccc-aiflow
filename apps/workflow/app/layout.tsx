@@ -1,7 +1,6 @@
-// import { GlobalHeader } from '@/components/global-header'
-
 import './globals.css';
 
+import { GlobalHeader } from '@/components/global-header';
 import { Toaster } from '@/components/ui/sonner';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -10,8 +9,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <body>
                 <div className="h-screen flex flex-col">
                     {/* 全局顶部导航 */}
-                    {/* <GlobalHeader /> */}
-                    <div>header</div>
+                    <GlobalHeader />
 
                     {/* 主内容区 */}
                     <main className="flex-1 overflow-auto bg-[#f4f6fb]">{children}</main>

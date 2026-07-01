@@ -28,6 +28,7 @@ export function EditAppDialog({ open, onOpenChange, app, onAppUpdated }: EditApp
     const [isSaving, setIsSaving] = useState(false);
 
     // 当 app 变化时，更新表单值
+    // 当前没有打通服务，等待测试
     // useEffect(() => {
     //     if (app) {
     //         setName(app.name);
