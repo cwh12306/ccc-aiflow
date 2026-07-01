@@ -24,7 +24,7 @@ interface User {
 }
 
 const navItems = [
-    { title: '工作室', url: '/apps', icon: ZapIcon, matchPaths: ['/apps', '/app'], color: '#06B6D4' },
+    { title: '工作室', url: '/', icon: ZapIcon, color: '#06B6D4' },
     { title: '知识库', url: '/knowledge', icon: BookOpenIcon, color: '#8B5CF6' },
     { title: '工具', url: '/tools', icon: WrenchIcon, color: '#F59E0B' },
 ];
@@ -59,10 +59,7 @@ export function GlobalHeader() {
     }, []);
 
     const isNavActive = (item: (typeof navItems)[0]) => {
-        if (item.matchPaths) {
-            return item.matchPaths.some(path => pathname.startsWith(path));
-        }
-        return pathname.startsWith(item.url);
+        return pathname === item.url;
     };
 
     const handleSignOut = async () => {

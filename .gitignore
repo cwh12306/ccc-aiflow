@@ -1,3 +1,4 @@
+miaoma-aiflow-demo
 # dependencies
 /node_modules
 /.pnp
@@ -82,5 +83,3 @@ docker/qdrant_storage
 apps/workflow/app/generated
 apps/api-server/src/generated
 apps/webapp/app/generated
-
-miaoma-aiflow-demo
