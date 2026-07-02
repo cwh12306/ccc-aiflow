@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import { appService } from '@/lib/services/app-service';
+import { appService } from '@/lib/services/app-service';
 
 // 分页配置
 const DEFAULT_PAGE_SIZE = 20;
@@ -23,28 +23,28 @@ export default function Home() {
 
     // 数据状态
     const [apps, setApps] = useState<AppInfo[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
 
     // 加载应用列表
-    // const loadApps = useCallback(async () => {
-    //     setLoading(true);
-    //     try {
-    //         const response = await appService.getList({
-    //             search: searchQuery || undefined,
-    //             type: (typeFilter as 'workflow' | 'chatbot' | 'agent' | 'all') || undefined,
-    //             page,
-    //             pageSize: DEFAULT_PAGE_SIZE,
-    //         });
-    //         setApps(response.items);
-    //         setTotal(response.total);
-    //     } catch (error) {
-    //         toast.error(error instanceof Error ? error.message : '加载应用列表失败');
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }, [searchQuery, typeFilter, page]);
+    const loadApps = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await appService.getList({
+                search: searchQuery || undefined,
+                type: (typeFilter as 'workflow' | 'chatbot' | 'agent' | 'all') || undefined,
+                page,
+                pageSize: DEFAULT_PAGE_SIZE,
+            });
+            setApps(response.items);
+            setTotal(response.total);
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : '加载应用列表失败');
+        } finally {
+            setLoading(false);
+        }
+    }, [searchQuery, typeFilter, page]);
 
     // 创建应用成功回调
     const handleAppCreated = (newApp: AppInfo) => {
@@ -66,9 +66,9 @@ export default function Home() {
     };
 
     // 初始化加载
-    // useEffect(() => {
-    // loadApps();
-    // }, [loadApps]);
+    useEffect(() => {
+        loadApps();
+    }, [loadApps]);
 
     return (
         <div className="px-12 py-6">

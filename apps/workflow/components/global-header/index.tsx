@@ -2,9 +2,8 @@
 
 import { BookOpenIcon, SettingsIcon, WrenchIcon, ZapIcon } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -31,48 +30,15 @@ const navItems = [
 
 export function GlobalHeader() {
     const pathname = usePathname();
-    const router = useRouter();
-    const [user, setUser] = useState<User | null>({
+    const [user] = useState<User | null>({
         name: 'ccc',
         email: 'ccc@example.com',
         id: '1',
         avatar: null,
     });
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch('/api/auth/me');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        setUser(data.data.user);
-                    }
-                }
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                console.error('Failed to fetch user:', error);
-            }
-        };
-
-        fetchUser();
-    }, []);
-
     const isNavActive = (item: (typeof navItems)[0]) => {
         return pathname === item.url;
-    };
-
-    const handleSignOut = async () => {
-        toast.success('登出服务，待开发');
-        // try {
-        //     const response = await fetch('/api/auth/logout', { method: 'POST' });
-        //     if (response.ok) {
-        //         toast.success('已登出');
-        //         router.push('/account/login');
-        //     }
-        // } catch {
-        //     toast.error('登出失败');
-        // }
     };
 
     const getUserInitial = () => {
@@ -143,7 +109,7 @@ export function GlobalHeader() {
                             设置
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleSignOut}>退出登录</DropdownMenuItem>
+                        <DropdownMenuItem>退出登录</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

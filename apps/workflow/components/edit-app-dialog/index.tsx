@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import type { AppInfo } from '@/components/app-card';
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-// import { appService } from '@/lib/services/app-service';
+import { appService } from '@/lib/services/app-service';
 import { cn } from '@/lib/utils';
 
 interface EditAppDialogProps {
@@ -27,33 +27,22 @@ export function EditAppDialog({ open, onOpenChange, app, onAppUpdated }: EditApp
     const [icon, setIcon] = useState(app?.icon ?? '🤖');
     const [isSaving, setIsSaving] = useState(false);
 
-    // 当 app 变化时，更新表单值
-    // 当前没有打通服务，等待测试
-    // useEffect(() => {
-    //     if (app) {
-    //         setName(app.name);
-    //         setDescription(app.description || '');
-    //         setIcon(app.icon || '🤖');
-    //     }
-    // }, [app]);
-
     const handleSave = async () => {
         if (!name.trim()) return;
 
         setIsSaving(true);
         try {
-            // const updatedApp = await appService.update(app.id, {
-            //     name: name.trim(),
-            //     description: description.trim() || undefined,
-            //     icon,
-            // });
-            toast.success('此处是更新应用信息服务，待开发');
+            const updatedApp = await appService.update(app.id, {
+                name: name.trim(),
+                description: description.trim() || undefined,
+                icon,
+            });
 
             // 关闭对话框
             onOpenChange(false);
 
             // 通知父组件 更新应用列表
-            // onAppUpdated?.(updatedApp);
+            onAppUpdated?.(updatedApp);
 
             toast.success('应用信息已更新');
         } catch (error) {

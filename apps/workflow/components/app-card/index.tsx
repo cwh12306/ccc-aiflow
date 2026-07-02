@@ -25,7 +25,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-// import { appService } from '@/lib/services/app-service'
+import { appService } from '@/lib/services/app-service';
 
 export interface AppInfo {
     id: string;
@@ -68,8 +68,7 @@ export function AppCard({ app, onDelete, onAppUpdated }: AppCardProps) {
         setDropdownOpen(false); // 关闭 dropdown
         setIsDeleting(true);
         try {
-            // await appService.delete(app.id)
-            toast.success('此处是删除应用服务，待开发');
+            await appService.delete(app.id);
             setDeleteDialogOpen(false);
             onDelete?.(app.id);
         } catch (error) {

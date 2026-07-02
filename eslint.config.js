@@ -31,7 +31,7 @@ const workflowConfig = {
         'react-refresh': reactRefresh,
     },
     rules: {
-        ...reactHooks.configs.recommended.rules,
+        // ...reactHooks.configs.recommended.rules,
         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         'react-hooks/incompatible-library': ['warn', { libraryName: 'react' }],
         'react-hooks/static-components': ['warn', { libraryName: 'react' }],

@@ -35,24 +35,23 @@ export function CreateAppDialog({ open, onOpenChange, onAppCreated }: CreateAppD
 
         setIsCreating(true);
         try {
-            // const newApp = await appService.create({
-            //     name: name.trim(),
-            //     description: description.trim() || undefined,
-            //     icon,
-            //     type: 'workflow',
-            //     tags: [],
-            // });
-            toast.success('创建应用服务，待开发');
+            const newApp = await appService.create({
+                name: name.trim(),
+                description: description.trim() || undefined,
+                icon,
+                type: 'workflow',
+                tags: [],
+            });
 
             // 关闭对话框并重置表单
             onOpenChange(false);
             resetForm();
 
             // 通知父组件 更新应用列表
-            // onAppCreated?.(newApp);
+            onAppCreated?.(newApp);
 
             // 跳转到应用编辑页面
-            // router.push(`/app/${newApp.id}/workflow`);
+            router.push(`/app/${newApp.id}/workflow`);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error('创建应用失败:', error);
