@@ -53,9 +53,9 @@ export function GlobalHeader() {
             <div className="flex items-center gap-3">
                 <Link href="/" className="flex items-center gap-2">
                     <div className="w-7 h-7 bg-linear-to-r from-[#4F46E5] to-[#8B5CF6] rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">妙</span>
+                        <span className="text-white font-bold text-sm">W</span>
                     </div>
-                    <span className="font-semibold text-lg">妙码 AI 引擎</span>
+                    <span className="font-semibold text-lg">AI 引擎</span>
                 </Link>
             </div>
 
