@@ -1,7 +1,7 @@
 import { Handle as XYFlowHandle, Position } from '@xyflow/react';
 import clsx from 'clsx';
 import { BookOpen, Brain, GitBranch, Globe, Terminal } from 'lucide-react';
-import { CSSProperties, forwardRef } from 'react';
+import { CSSProperties, forwardRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -66,6 +66,7 @@ export const Handle = forwardRef<HTMLDivElement, HandleProps>(function Handle(
 ) {
     const { onAddNode } = useFlowEditorContext();
     const isSource = type === 'source' && position === Position.Right;
+    const [open, setOpen] = useState(false);
 
     return (
         <XYFlowHandle
@@ -86,7 +87,7 @@ export const Handle = forwardRef<HTMLDivElement, HandleProps>(function Handle(
             <div className={clsx('w-[2px] h-2 bg-purple-700', className)} />
             {isSource && onAddNode && (
                 <div className="absolute -right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                    <Popover>
+                    <Popover open={open} onOpenChange={setOpen}>
                         <PopoverTrigger asChild>
                             <Button
                                 variant="ghost"
@@ -102,7 +103,10 @@ export const Handle = forwardRef<HTMLDivElement, HandleProps>(function Handle(
                                 <button
                                     key={item.type}
                                     type="button"
-                                    onClick={() => onAddNode(item.type)}
+                                    onClick={() => {
+                                        onAddNode(item.type);
+                                        setOpen(false);
+                                    }}
                                     className="w-full flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 transition-colors text-left"
                                 >
                                     <div

@@ -49,6 +49,5 @@ export default function WorkflowPage() {
         );
     }
 
-    // return <FlowEditor appId={appId} appName={appName} initialNodes={initialNodes} initialEdges={initialEdges} />;
-    return '工作流编辑器待开发';
+    return <FlowEditor appId={appId} appName={appName} initialNodes={initialNodes} initialEdges={initialEdges} />;
 }

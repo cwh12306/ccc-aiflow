@@ -33,8 +33,8 @@ const workflowConfig = {
     rules: {
         // ...reactHooks.configs.recommended.rules,
         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-        'react-hooks/incompatible-library': ['warn', { libraryName: 'react' }],
-        'react-hooks/static-components': ['warn', { libraryName: 'react' }],
+        // 'react-hooks/incompatible-library': ['warn', { libraryName: 'react' }],
+        // 'react-hooks/static-components': ['warn', { libraryName: 'react' }],
         'no-console': 'error',
     },
 };

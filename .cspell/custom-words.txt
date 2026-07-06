@@ -6,3 +6,4 @@ uuidv4
 pannable
 zoomable
 fulltext
+Doubao

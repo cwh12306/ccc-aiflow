@@ -90,6 +90,9 @@ importers:
       '@ccc-aiflow/ai-engine':
         specifier: workspace:*
         version: link:../../packages/ai-engine
+      '@floating-ui/dom':
+        specifier: ^1.7.4
+        version: 1.7.6
       '@prisma/adapter-pg':
         specifier: ^7.2.0
         version: 7.8.0
@@ -153,6 +156,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.2.8
         version: 1.2.10(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@tiptap/core':
+        specifier: ^3.14.0
+        version: 3.27.1(@tiptap/pm@3.27.1)
       '@tiptap/extension-placeholder':
         specifier: 3.15.3
         version: 3.15.3(@tiptap/extensions@3.27.1(@tiptap/core@3.27.1(@tiptap/pm@3.27.1))(@tiptap/pm@3.27.1))
