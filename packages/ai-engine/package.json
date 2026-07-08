@@ -24,12 +24,14 @@
     "dependencies": {
         "@langchain/core": "^1.0.3",
         "@langchain/langgraph": "^1.0.0",
-        "@langchain/ollama": "^1.0.0",
+        "@langchain/openai": "1.4.7",
         "@qdrant/js-client-rest": "^1.16.2",
         "zod": "^3.25.76"
     },
     "devDependencies": {
         "tsx": "^4.19.2",
-        "vitest": "^4.0.16"
+        "vitest": "^4.0.16",
+        "dotenv": "17.4.2",
+        "@types/node": "26.1.0"
     }
 }

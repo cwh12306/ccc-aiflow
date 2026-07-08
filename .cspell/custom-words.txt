@@ -7,3 +7,7 @@ pannable
 zoomable
 fulltext
 Doubao
+Ollama
+langchain
+mxbai
+Qdrant

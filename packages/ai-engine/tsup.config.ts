@@ -10,6 +10,7 @@ export default defineConfig([
         clean: true,
         minify: true,
         outDir: 'build/esm',
+        external: ['dotenv'],
     },
     {
         entry: ['src/index.ts'],
@@ -20,5 +21,6 @@ export default defineConfig([
         clean: true,
         minify: true,
         outDir: 'build/cjs',
+        external: ['dotenv'],
     },
 ]);

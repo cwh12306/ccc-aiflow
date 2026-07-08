@@ -21,7 +21,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-// import { workflowService } from '@/lib/services/workflow-service'
+import { workflowService } from '@/lib/services/workflow-service';
 import type { FlowEdge as WorkflowFlowEdge, FlowNode as WorkflowFlowNode } from '@/lib/types/workflow';
 
 import { ExecutionDetailPanel } from '../execution-history';
@@ -219,10 +219,10 @@ function EditorInner({ appId, appName, initialNodes = [], initialEdges = [] }: F
         setIsSaving(true);
         try {
             // 使用 ref 中的最新值，避免保存旧数据
-            // await workflowService.save(appId, {
-            //     nodes: nodesRef.current as WorkflowFlowNode[],
-            //     edges: edgesRef.current as WorkflowFlowEdge[],
-            // })
+            await workflowService.save(appId, {
+                nodes: nodesRef.current as WorkflowFlowNode[],
+                edges: edgesRef.current as WorkflowFlowEdge[],
+            });
             setHasUnsavedChanges(false);
             setLastSavedAt(new Date());
         } catch (error) {
@@ -409,7 +409,11 @@ function EditorInner({ appId, appName, initialNodes = [], initialEdges = [] }: F
                         nodeTypes={nodeTypes}
                         onSelectionChange={({ nodes }) => {
                             if (mode === 'edit') {
-                                setSelectedNode(nodes[0] || null);
+                                if (!selectedNode) {
+                                    setSelectedNode(null);
+                                } else {
+                                    setSelectedNode(nodes[0] || null);
+                                }
                             }
                         }}
                         fitView

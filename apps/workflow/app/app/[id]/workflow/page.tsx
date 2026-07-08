@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { FlowEditor } from '@/components/flow/editor';
 import { appService } from '@/lib/services/app-service';
-// import { workflowService } from '@/lib/services/workflow-service'
+import { workflowService } from '@/lib/services/workflow-service';
 import type { FlowEdge, FlowNode } from '@/lib/types/workflow';
 
 export default function WorkflowPage() {
@@ -21,14 +21,14 @@ export default function WorkflowPage() {
             setLoading(true);
             try {
                 // 并行加载应用和工作流数据
-                const [app] = await Promise.all([
+                const [app, workflow] = await Promise.all([
                     appService.getById(appId),
-                    // workflowService.getByAppId(appId).catch(() => ({ nodes: [], edges: [] })),
+                    workflowService.getByAppId(appId).catch(() => ({ nodes: [], edges: [] })),
                 ]);
 
                 setAppName(app.name);
-                // setInitialNodes(workflow.nodes)
-                // setInitialEdges(workflow.edges)
+                setInitialNodes(workflow.nodes);
+                setInitialEdges(workflow.edges);
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.error('加载数据失败:', error);
