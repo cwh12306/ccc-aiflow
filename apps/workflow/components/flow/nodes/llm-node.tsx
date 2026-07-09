@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Handle } from '../handle';
 import { ICON_MAP } from '../icon-map';
 
-export function LLMNode({ data, selected }: NodeProps) {
+export function LLMNode({ data, selected, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
     const [model] = useState<string>((data?.config as any)?.model ?? process.env.MODEL);
     const label = (data?.label as string) || '大模型';
 
@@ -24,7 +24,7 @@ export function LLMNode({ data, selected }: NodeProps) {
                 </div>
             </div>
             <Handle type="target" position={Position.Left} />
-            <Handle type="source" position={Position.Right} />
+            <Handle type="source" position={Position.Right} startPosition={{ x: positionAbsoluteX, y: positionAbsoluteY }} />
         </div>
     );
 }

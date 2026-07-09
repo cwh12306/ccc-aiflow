@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Handle } from '../handle';
 import { ICON_MAP } from '../icon-map';
 
-export function HttpNode({ data, selected }: NodeProps) {
+export function HttpNode({ data, selected, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
     const config = data?.config as any;
     const method = config?.method ?? 'GET';
     const url = config?.url ?? '';
@@ -52,7 +52,7 @@ export function HttpNode({ data, selected }: NodeProps) {
                 )}
             </div>
             <Handle type="target" position={Position.Left} />
-            <Handle type="source" position={Position.Right} />
+            <Handle type="source" position={Position.Right} startPosition={{ x: positionAbsoluteX, y: positionAbsoluteY }} />
         </div>
     );
 }

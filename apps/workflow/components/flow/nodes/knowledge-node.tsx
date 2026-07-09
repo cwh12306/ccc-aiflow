@@ -10,7 +10,7 @@ interface KnowledgeNodeConfig {
     topK?: number;
 }
 
-export function KnowledgeNode({ data, selected }: NodeProps) {
+export function KnowledgeNode({ data, selected, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
     const config = (data?.config as KnowledgeNodeConfig) || {};
     const label = (data?.label as string) || '知识库';
 
@@ -47,7 +47,7 @@ export function KnowledgeNode({ data, selected }: NodeProps) {
                 )}
             </div>
             <Handle type="target" position={Position.Left} />
-            <Handle type="source" position={Position.Right} />
+            <Handle type="source" position={Position.Right} startPosition={{ x: positionAbsoluteX, y: positionAbsoluteY }} />
         </div>
     );
 }

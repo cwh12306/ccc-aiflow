@@ -54,6 +54,7 @@ const nodeItems: NodeItem[] = [
 interface HandleProps {
     type: 'source' | 'target';
     position: Position;
+    startPosition?: { x: number; y: number };
     id?: string;
     className?: string;
     handleClassName?: string;
@@ -61,7 +62,7 @@ interface HandleProps {
 }
 
 export const Handle = forwardRef<HTMLDivElement, HandleProps>(function Handle(
-    { type, id, position, className, handleClassName, style },
+    { type, id, position, className, handleClassName, style, startPosition },
     ref
 ) {
     const { onAddNode } = useFlowEditorContext();
@@ -73,6 +74,9 @@ export const Handle = forwardRef<HTMLDivElement, HandleProps>(function Handle(
             id={id}
             type={type}
             position={position}
+            onClick={evt => {
+                evt.stopPropagation();
+            }}
             className={clsx(
                 'flex',
                 position === Position.Right ? 'justify-end' : 'justify-start',
@@ -104,7 +108,7 @@ export const Handle = forwardRef<HTMLDivElement, HandleProps>(function Handle(
                                     key={item.type}
                                     type="button"
                                     onClick={() => {
-                                        onAddNode(item.type);
+                                        onAddNode(item.type, startPosition || { x: 350, y: 200 });
                                         setOpen(false);
                                     }}
                                     className="w-full flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 transition-colors text-left"

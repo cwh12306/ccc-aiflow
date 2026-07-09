@@ -23,7 +23,7 @@ const TYPE_ICONS: Record<string, string> = {
     object: '{}',
 };
 
-export function StartNode({ data, selected }: NodeProps) {
+export function StartNode({ data, selected, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
     const inputs = (data?.config as any)?.inputs as InputParam[] | undefined;
     const label = (data?.label as string) || '开始';
 
@@ -62,7 +62,7 @@ export function StartNode({ data, selected }: NodeProps) {
                 <div className="text-center py-2 text-gray-400 text-xs">暂无入参</div>
             )}
 
-            <Handle type="source" position={Position.Right} />
+            <Handle type="source" position={Position.Right} startPosition={{ x: positionAbsoluteX, y: positionAbsoluteY }} />
         </div>
     );
 }

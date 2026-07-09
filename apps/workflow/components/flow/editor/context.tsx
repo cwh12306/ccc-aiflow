@@ -7,7 +7,7 @@ import { createContext, useContext } from 'react';
 export type NodeKind = 'start' | 'llm' | 'http' | 'condition' | 'end' | 'knowledge';
 
 export interface FlowEditorContextValue {
-    onAddNode?: (type: NodeKind) => void;
+    onAddNode?: (type: NodeKind, startPosition: { x: number; y: number }) => void;
     hasStartNode?: boolean;
     /** 所有节点信息，用于在节点卡片中渲染变量标签 */
     nodes?: Array<{ id: string; data?: { label?: string } }>;

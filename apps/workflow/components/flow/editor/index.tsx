@@ -247,7 +247,7 @@ function EditorInner({ appId, appName, initialNodes = [], initialEdges = [] }: F
 
     // 添加节点
     const onAddNode = useCallback(
-        (type: NodeKind) => {
+        (type: NodeKind, startPosition: { x: number; y: number }) => {
             // 如果是开始节点且已存在，则不允许添加
             if (type === 'start' && hasStartNode) {
                 toast.error('工作流只能有一个开始节点');
@@ -260,8 +260,8 @@ function EditorInner({ appId, appName, initialNodes = [], initialEdges = [] }: F
                 type,
                 position: {
                     // 放在画布中心附近，稍微偏移避免重叠
-                    x: 350 + Math.random() * 200,
-                    y: 200 + Math.random() * 200,
+                    x: startPosition.x + Math.random() * 200,
+                    y: startPosition.y + Math.random() * 200,
                 },
                 data: nodeConfig,
             };
