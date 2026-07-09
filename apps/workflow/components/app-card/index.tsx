@@ -102,7 +102,8 @@ export function AppCard({ app, onDelete, onAppUpdated }: AppCardProps) {
                             <div className="flex-1 min-w-0">
                                 <h3 className="font-semibold text-base truncate">{app.name}</h3>
                                 <p className="text-xs text-muted-foreground mt-0.5">
-                                    {app.author || '未知'} · 编辑于 {app.updatedAt}
+                                    {/* {app.author || '未知'} */}
+                                    ccc · 编辑于 {app.updatedAt}
                                 </p>
                             </div>
                         </div>

@@ -55,12 +55,24 @@ export class GraphBuilder {
         const visited = new Set<string>();
         const queue: string[] = [];
 
-        // 创建入度副本
-        const inDegreeCopy = new Map(this.inDegree);
+        const activeNodeIds = this.workflow.nodes.filter(node => !this.excludedNodes.has(node.id)).map(node => node.id);
 
-        // 找到所有入度为0的节点（起始节点）
-        for (const [nodeId, degree] of inDegreeCopy) {
-            if (degree === 0 && !this.excludedNodes.has(nodeId)) {
+        const inDegreeCopy = new Map<string, number>();
+        for (const nodeId of activeNodeIds) {
+            inDegreeCopy.set(nodeId, 0);
+        }
+
+        for (const edge of this.workflow.edges) {
+            if (this.excludedNodes.has(edge.source) || this.excludedNodes.has(edge.target)) {
+                continue;
+            }
+
+            const degree = inDegreeCopy.get(edge.target) || 0;
+            inDegreeCopy.set(edge.target, degree + 1);
+        }
+
+        for (const nodeId of activeNodeIds) {
+            if ((inDegreeCopy.get(nodeId) || 0) === 0) {
                 queue.push(nodeId);
             }
         }
@@ -79,7 +91,6 @@ export class GraphBuilder {
                 result.push(node);
             }
 
-            // 更新后继节点的入度
             const successors = this.adjacencyList.get(nodeId) || [];
             for (const successor of successors) {
                 if (this.excludedNodes.has(successor)) continue;

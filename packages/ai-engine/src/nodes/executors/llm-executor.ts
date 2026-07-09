@@ -51,9 +51,6 @@ export class LLMExecutor extends BaseNodeExecutor<LLMNodeConfig> {
         const apiKey = resolveEnvironmentValue(['API_KEY']);
         const baseUrl = resolveEnvironmentValue(['BASE_URL']);
 
-        logger.info(`Invoking LLM with apiKey: ${apiKey}`);
-        logger.info(`Invoking LLM with BASE_URL: ${baseUrl}`);
-
         if (!apiKey) {
             throw new Error('Missing API key. Please set API_KEY or OPENAI_API_KEY in the environment.');
         }

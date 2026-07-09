@@ -107,15 +107,19 @@ export class WorkflowEngine implements IWorkflowEngine {
                 order: executionOrder.map(n => `${n.id}(${n.type})`),
             });
 
-            // 4. 按顺序执行节点
+            // 4. 动态执行节点：每次从当前可执行顺序中挑选下一个未执行节点
             let finalOutputs: Record<string, unknown> = {};
             const executedNodes = new Set<string>();
 
-            for (const node of executionOrder) {
-                // 跳过已执行的节点
-                if (executedNodes.has(node.id)) {
-                    continue;
+            while (true) {
+                executionOrder = graphBuilder.getExecutionOrder();
+                const nextNode = executionOrder.find(node => !executedNodes.has(node.id));
+
+                if (!nextNode) {
+                    break;
                 }
+
+                const node = nextNode;
 
                 logger.setCurrentNode(node.id);
 
@@ -145,8 +149,6 @@ export class WorkflowEngine implements IWorkflowEngine {
                 // 处理条件节点的分支选择
                 if (node.type === 'condition' && result.matchedBranch) {
                     graphBuilder.selectBranch(node.id, result.matchedBranch);
-                    // 重新获取执行顺序（排除未选中分支）
-                    executionOrder = graphBuilder.getExecutionOrder();
                     logger.debug('Branch selected, execution order updated', {
                         selectedBranch: result.matchedBranch,
                         newOrder: executionOrder.map(n => `${n.id}(${n.type})`),

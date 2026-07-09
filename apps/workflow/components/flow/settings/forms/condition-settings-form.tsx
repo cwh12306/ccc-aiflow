@@ -95,7 +95,7 @@ function IntentCard({
  */
 export function ConditionSettingsForm({ node, onSave, onCancel, flowContext }: NodeSettingsFormProps<ConditionNodeConfig>) {
     const defaultConfig = (node.data?.config as any) || {};
-    const [model, setModel] = useState<string>(defaultConfig.model || 'gpt-3.5-turbo');
+    const [model, setModel] = useState<string>(defaultConfig.model || 'deepseek-v4-flash');
     const [intents, setIntents] = useState<Intent[]>(defaultConfig.intents || []);
     const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
     const lastSavedDataRef = useRef<string>('');
