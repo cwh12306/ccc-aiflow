@@ -61,7 +61,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             return apiError(ErrorCode.VALIDATION_ERROR, result.error.issues[0]?.message);
         }
 
-        // 检查应用是否存在且属于当前用户
         const existingApp = await prisma.app.findFirst({
             where: {
                 id,
@@ -120,7 +119,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     try {
         const { id } = await params;
 
-        // 检查应用是否存在且属于当前用户
         const existingApp = await prisma.app.findFirst({
             where: {
                 id,
