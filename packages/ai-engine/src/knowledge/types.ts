@@ -235,9 +235,9 @@ export const DEFAULT_CHUNKING_CONFIG: ChunkingConfig = {
 };
 
 export const DEFAULT_EMBEDDING_CONFIG: EmbeddingConfig = {
-    model: 'mxbai-embed-large:latest',
-    baseUrl: 'http://localhost:11434',
-    dimensions: 1024,
+    model: process.env.EMBEDDING_MODEL || 'doubao-embedding-vision',
+    baseUrl: process.env.BASE_URL || 'https://ark.cn-beijing.volces.com/api/plan/v3',
+    dimensions: 2048,
 };
 
 export const DEFAULT_VECTOR_STORE_CONFIG: VectorStoreConfig = {

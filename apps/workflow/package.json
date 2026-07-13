@@ -52,7 +52,8 @@
         "react-hook-form": "^7.67.0",
         "@floating-ui/dom": "^1.7.4",
         "@tiptap/core": "^3.14.0",
-        "recharts": "2.15.4"
+        "recharts": "2.15.4",
+        "@qdrant/js-client-rest": "^1.16.2"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4",

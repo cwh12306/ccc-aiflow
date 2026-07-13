@@ -10,6 +10,7 @@ import { DEFAULT_VECTOR_STORE_CONFIG } from '../types';
 export class QdrantVectorStore implements VectorStoreService {
     private client: QdrantClient;
     private collectionName: string;
+    private collectionDimensions?: number;
 
     constructor(config?: Partial<VectorStoreConfig>) {
         const { url, collectionName } = { ...DEFAULT_VECTOR_STORE_CONFIG, ...config };
@@ -28,6 +29,19 @@ export class QdrantVectorStore implements VectorStoreService {
             const exists = collections.collections.some(c => c.name === this.collectionName);
 
             if (exists) {
+                const info = await this.client.getCollection(this.collectionName);
+                const existingDimensions = info.config?.params?.vectors?.size;
+
+                if (typeof existingDimensions === 'number') {
+                    this.collectionDimensions = existingDimensions;
+
+                    if (existingDimensions !== dimensions) {
+                        throw new Error(
+                            `Qdrant collection "${this.collectionName}" already exists with dimension ${existingDimensions}, expected ${dimensions}`
+                        );
+                    }
+                }
+
                 return;
             }
 
@@ -43,6 +57,8 @@ export class QdrantVectorStore implements VectorStoreService {
                 },
             });
 
+            this.collectionDimensions = dimensions;
+
             // 创建 payload 索引
             await this.client.createPayloadIndex(this.collectionName, {
                 field_name: 'knowledgeBaseId',
@@ -54,7 +70,13 @@ export class QdrantVectorStore implements VectorStoreService {
                 field_schema: 'keyword',
             });
         } catch (error) {
-            throw new Error(`Failed to ensure collection: ${error instanceof Error ? error.message : String(error)}`);
+            const qdrantError =
+                error && typeof error === 'object' && 'data' in error
+                    ? ((error as any).data?.status?.error ?? (error as any).data)
+                    : undefined;
+            throw new Error(
+                `Failed to ensure collection: ${error instanceof Error ? error.message : String(error)}${qdrantError ? ` - ${qdrantError}` : ''}`
+            );
         }
     }
 
@@ -64,6 +86,17 @@ export class QdrantVectorStore implements VectorStoreService {
     async upsertVectors(chunks: ChunkWithVector[]): Promise<void> {
         if (chunks.length === 0) {
             return;
+        }
+
+        const expectedLength = chunks[0].vector.length;
+        if (chunks.some(chunk => !Array.isArray(chunk.vector) || chunk.vector.length !== expectedLength)) {
+            throw new Error('All chunk vectors must have the same dimension length.');
+        }
+
+        if (this.collectionDimensions !== undefined && expectedLength !== this.collectionDimensions) {
+            throw new Error(
+                `Vector dimension mismatch: collection expects ${this.collectionDimensions}, but chunk vector dimension is ${expectedLength}`
+            );
         }
 
         try {
@@ -93,7 +126,13 @@ export class QdrantVectorStore implements VectorStoreService {
                 });
             }
         } catch (error) {
-            throw new Error(`Failed to upsert vectors: ${error instanceof Error ? error.message : String(error)}`);
+            const qdrantError =
+                error && typeof error === 'object' && 'data' in error
+                    ? ((error as any).data?.status?.error ?? (error as any).data)
+                    : undefined;
+            throw new Error(
+                `Failed to upsert vectors: ${error instanceof Error ? error.message : String(error)}${qdrantError ? ` - ${qdrantError}` : ''}`
+            );
         }
     }
 

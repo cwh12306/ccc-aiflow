@@ -30,7 +30,7 @@ export class KnowledgeExecutor extends BaseNodeExecutor<KnowledgeNodeConfig> {
         super();
         this.qdrantUrl = options?.qdrantUrl || process.env.QDRANT_URL || 'http://localhost:6333';
         this.embeddingModel = options?.embeddingModel || process.env.EMBEDDING_MODEL!;
-        this.embeddingDimensions = options?.embeddingDimensions || 1024;
+        this.embeddingDimensions = options?.embeddingDimensions || 2048;
     }
 
     protected async doExecute(
