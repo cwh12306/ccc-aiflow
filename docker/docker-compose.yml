@@ -10,7 +10,7 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_DB=postgres
             # - POSTGRESQL_USERNAME=ccc
-            - POSTGRES_PASSWORD=123456
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             # - POSTGRESQL_DATABASE=postgres
         volumes:
             - ./postgresql_data:/var/lib/postgresql
