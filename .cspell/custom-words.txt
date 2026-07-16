@@ -1,0 +1,13 @@
+aiflow
+logomark
+xyflow
+deepseek
+uuidv4
+pannable
+zoomable
+fulltext
+Doubao
+Ollama
+langchain
+mxbai
+Qdrant

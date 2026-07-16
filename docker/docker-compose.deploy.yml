@@ -1,0 +1,63 @@
+include:
+  - docker-compose.yml
+
+services:
+  # ========== 应用服务 ==========
+  ccc-aiflow-workflow:
+    build:
+      # 指向项目根目录，目前是docker/*文件夹下，所以需要..到根目录
+      context: ..
+      dockerfile: apps/workflow/Dockerfile
+    container_name: ccc-aiflow-workflow
+    restart: unless-stopped
+    env_file:
+      - ../apps/workflow/.env.prod
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      # 按你项目实际需要的连接串修改，注意 host 用服务名而不是 localhost
+      # 只有当 workflow 容器和 postgresql/qdrant 容器在同一个 compose 项目、同一个 network 时才能这样解析。目前所有服务都在 ccc-aiflow-network 下，没问题。
+      # - DATABASE_URL=postgresql://postgres:123456@ccc-aiflow-postgresql:5432/postgres
+      # - QDRANT_URL=http://ccc-aiflow-qdrant:6333
+    depends_on:
+      - ccc-aiflow-postgresql
+      - ccc-aiflow-qdrant
+    # 不再直接暴露端口给外部，只通过 Caddy 转发
+    expose:
+      - '3000'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100m'
+        max-file: '3'
+
+  # ========== Caddy 反向代理 ==========
+  ccc-aiflow-caddy:
+    image: caddy:2-alpine
+    container_name: ccc-aiflow-caddy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+    depends_on:
+      - ccc-aiflow-workflow
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100m'
+        max-file: '3'
+  # 生产环境关闭数据库外部端口（可选，视你的 compose 版本支持情况）
+  ccc-aiflow-postgresql:
+    ports: !override []
+  ccc-aiflow-qdrant:
+    ports: !override []
+
+networks:
+  default:
+    name: ccc-aiflow-network
+    driver: bridge

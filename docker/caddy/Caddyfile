@@ -1,0 +1,13 @@
+# your-domain.com {
+#     reverse_proxy ccc-aiflow-workflow:3000
+# }
+
+:80 {
+    reverse_proxy ccc-aiflow-workflow:3000
+}
+
+# https 本地测试
+# localhost {
+#     tls internal
+#     reverse_proxy ccc-aiflow-workflow:3000
+# }
