@@ -228,7 +228,7 @@ model KnowledgeBase {
   // 嵌入配置
   embeddingModel    String            @default("mxbai-embed-large:latest")
   embeddingProvider String            @default("ollama")
-  dimensions        Int               @default(1024)
+  dimensions        Int               @default(2048)
 
   // 切分配置
   chunkSize       Int                 @default(500)

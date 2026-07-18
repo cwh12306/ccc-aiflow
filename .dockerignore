@@ -1,0 +1,15 @@
+.git
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules
+**/.next
+**/.turbo
+**/out
+**/dist
+coverage
+docker/postgresql_data
+docker/qdrant_storage
+docker/caddy_data
+docker/caddy_config
+*.log
