@@ -2,14 +2,32 @@ include:
   - docker-compose.yml
 
 services:
+  # ========== 数据库迁移任务 ==========
+  ccc-aiflow-migrate:
+    profiles:
+      - tools
+    build:
+      context: ..
+      dockerfile: apps/workflow/Dockerfile
+      target: migrator
+      args:
+        NEXT_PUBLIC_WEBAPP_URL: ${NEXT_PUBLIC_WEBAPP_URL}
+    env_file:
+      - ../apps/workflow/.env.prod
+    depends_on:
+      ccc-aiflow-postgresql:
+        condition: service_healthy
+
   # ========== 应用服务 ==========
   ccc-aiflow-workflow:
     build:
       # 指向项目根目录，目前是docker/*文件夹下，所以需要..到根目录
       context: ..
       dockerfile: apps/workflow/Dockerfile
+      args:
+        NEXT_PUBLIC_WEBAPP_URL: ${NEXT_PUBLIC_WEBAPP_URL}
     container_name: ccc-aiflow-workflow
-    restart: unless-stopped
+    restart: always
     env_file:
       - ../apps/workflow/.env.prod
     environment:
@@ -21,11 +39,25 @@ services:
       # - DATABASE_URL=postgresql://postgres:123456@ccc-aiflow-postgresql:5432/postgres
       # - QDRANT_URL=http://ccc-aiflow-qdrant:6333
     depends_on:
-      - ccc-aiflow-postgresql
-      - ccc-aiflow-qdrant
+        ccc-aiflow-postgresql:
+          condition: service_healthy
+        ccc-aiflow-qdrant:
+          condition: service_healthy
     # 不再直接暴露端口给外部，只通过 Caddy 转发
     expose:
       - '3000'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
     logging:
       driver: 'json-file'
       options:
@@ -34,18 +66,24 @@ services:
 
   # ========== Caddy 反向代理 ==========
   ccc-aiflow-caddy:
-    image: caddy:2-alpine
+    image: caddy:2-alpine@sha256:5f5c8640aae01df9654968d946d8f1a56c497f1dd5c5cda4cf95ab7c14d58648
     container_name: ccc-aiflow-caddy
     restart: unless-stopped
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./caddy_data:/data
       - ./caddy_config:/config
     depends_on:
       - ccc-aiflow-workflow
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1/']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
     logging:
       driver: 'json-file'
       options:

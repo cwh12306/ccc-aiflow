@@ -1,0 +1,84 @@
+:80 {
+    reverse_proxy ccc-aiflow-workflow:3000 {
+        # 健康检查
+        health_uri /
+        health_interval 30s
+        health_timeout 10s
+    }
+
+    log {
+        output stdout
+        format console
+    }
+}
+
+# https 本地测试
+# localhost {
+#     tls internal
+#     reverse_proxy ccc-aiflow-workflow:3000
+# }
+
+
+
+# 生产环境配置
+# 主域名配置
+# aiflow.yourdomain.com {
+#     # 启用 Gzip 压缩
+#     encode gzip
+# 
+#     # 反向代理到 Next.js
+#     reverse_proxy webapp:3000 {
+#         # 负载均衡（多实例时启用）
+#         # lb_policy round_robin
+# 
+#         # 传递原始 Host 头
+#         header_up Host {host}
+#         header_up X-Real-IP {remote_host}
+#         header_up X-Forwarded-For {remote_host}
+#         header_up X-Forwarded-Proto {scheme}
+#     }
+
+    # 安全头
+#     header {
+#         # HSTS
+#         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#         # 防止 XSS
+#         X-XSS-Protection "1; mode=block"
+#         # 防止 MIME 类型嗅探
+#         X-Content-Type-Options "nosniff"
+#         # 防止点击劫持
+#         X-Frame-Options "SAMEORIGIN"
+#         # 隐藏服务器信息
+#         -Server
+#     }
+# 
+#     # 日志配置
+#     log {
+#         output file /var/log/caddy/access.log {
+#             roll_size 100mb
+#             roll_keep 10
+#         }
+#         format json
+#     }
+# }
+
+# API 子域名（可选）
+# api.yourdomain.com {
+#     encode gzip
+# 
+#     # CORS 配置
+#     @options {
+#         method OPTIONS
+#     }
+#     handle @options {
+#         header Access-Control-Allow-Origin "*"
+#         header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+#        header Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key"
+#         respond 204
+#     }
+# 
+#     reverse_proxy webapp:3000 {
+#         header_up Host {host}
+#         header_up X-Real-IP {remote_host}
+#     }
+# }
