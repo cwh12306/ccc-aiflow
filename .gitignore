@@ -9,6 +9,10 @@ aiflow-code
 !.yarn/releases
 !.yarn/versions
 
+.agents/
+output/
+.reposkillopt/
+
 # testing
 /coverage
 
