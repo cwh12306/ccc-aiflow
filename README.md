@@ -110,9 +110,6 @@ pnpm --filter @ccc-aiflow/api-server start:dev
 
 ## 系统截图
 
-> [!NOTE]
-> 将截图放入 `docs/images/`，然后使用占位块下方注释中的 Markdown 图片代码进行替换。
-
 ### 工作室
 
 > 截图占位：应用列表、搜索筛选和创建入口。
